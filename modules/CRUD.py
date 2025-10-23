@@ -1,9 +1,32 @@
 import modules.utils as u
-import json
+
 
 # ADMINS CRUD
 def registro_eventos():
-    pass
+    eventos = u.leer_json("eventos.json")
+    if eventos is None:
+        eventos = []
+    print(">>>>  Nuevo Evento <<<<<\n")
+    id = input("ID Evento: ")
+    nombre = input("Nombre: ")
+    fecha = input("Fecha: ")
+    hora = input("Hora: ")
+    lugar = input("Lugar: ")
+    capacidad = input("Aforo: ")
+
+    nuevo_evento = {
+        "id": id,
+        "nombre": nombre,
+        "fecha": fecha,
+        "hora": hora,
+        "lugar": lugar,
+        "capacidad": capacidad
+    }
+    eventos.append(nuevo_evento)
+    u.escribir_json(eventos, "eventos.json")
+
+    
+
 
 def registro_artistas():
     pass
