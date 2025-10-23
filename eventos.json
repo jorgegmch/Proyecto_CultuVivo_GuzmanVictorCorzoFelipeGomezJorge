@@ -1,0 +1,18 @@
+[
+    {
+        "id": "1",
+        "nombre": "Concierto Rock",
+        "fecha": "2023-10-01",
+        "hora": "20:00",
+        "lugar": "Estadio Nacional",
+        "capacidad": "5000"
+    },
+    {
+        "id": "2",
+        "nombre": "Festival Jazz",
+        "fecha": "2023-11-15",
+        "hora": "18:00",
+        "lugar": "Parque Central",
+        "capacidad": "3000"
+    }
+]
