@@ -1,0 +1,104 @@
+import modules.utils as u
+import modules.messages as m
+import modules.CRUD as c
+def main():
+    u.clear_screen()
+    bandera=True
+    while bandera:
+        opcion=m.primer_menu()
+        if opcion == "2":
+            c.nuevo_asistente()
+            u.pause()
+        elif opcion == "1":        
+            isActive= True
+            while isActive:            
+                rol = c.login()       
+                if rol == "asistente":
+                    running = True    
+                    while running:
+                        u.clear_screen
+                        opcion = m.menu_asistentes()
+                        if opcion == "1":
+                            u.clear_screen()
+                            c.ver_eventos_disponibles()
+                            u.pause()
+                        elif opcion == "2":
+                            u.clear_screen()
+                            c.inscripcion_evento()
+                            u.pause()
+                        elif opcion == "3":
+                            u.clear_screen()
+                            c.boletos_incripciones()
+                            u.pause()
+                        elif opcion == "4":
+                            u.clear_screen()
+                            c.actualizar_estado_inscripcion()
+                            u.pause()
+                        elif opcion == "5":
+                            u.clear_screen()
+                            c.cancelar_inscripcion()
+                            u.pause()
+                        elif opcion == "0":                            
+                            print("Cerrando sesión.")
+                            running = False
+                        else:
+                            print("Opción inválida. Intente de nuevo.")
+                            u.pause()
+                        
+                elif rol == "admin":
+                    running = True    
+                    while running:
+                        u.clear_screen()
+                        option = m.menu_admin()  
+                        if option == "1":
+                            u.clear_screen()
+                            c.registro_eventos()
+                            u.pause()
+                        elif option == "2":
+                            u.clear_screen()
+                            c.registro_artistas()
+                            u.pause()
+                        elif option == "0":
+                            running= False
+                            u.clear_screen()              
+
+                elif rol == "artista":
+                    running = True    
+                    while running:
+                        u.clear_screen()
+                        option = m.menu_artistas()
+                        if option == "1":
+                            u.clear_screen()
+                            c.agenda_presentaciones()
+                            u.pause()
+                        elif option == "2":
+                            c.detalles_eventos() #funcion innecesaria por que la informacion que muestra es igual a la primera 
+                            u.pause
+                        elif option == "0":
+                            running= False
+                            u.clear_screen()
+
+
+
+
+
+                    
+                    
+
+
+
+
+                elif rol == "salir":
+                    u.clear_screen()
+                    isActive=False
+                    
+
+        elif opcion == "0":
+            bandera=False
+            print("¡Hasta luego!")
+
+
+
+
+if __name__ == "__main__":
+    main()

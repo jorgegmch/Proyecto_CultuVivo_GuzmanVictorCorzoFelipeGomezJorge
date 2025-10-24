@@ -22,5 +22,13 @@
         "hora": "6:00 pm ",
         "lugar": "movistar arena",
         "capacidad": "5000"
+    },
+    {
+        "id": "4",
+        "nombre": "Qatro pizza",
+        "fecha": "4 de diciembre",
+        "hora": "5 pm",
+        "lugar": "barichara",
+        "capacidad": "2000"
     }
 ]

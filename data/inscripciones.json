@@ -1,0 +1,32 @@
+[
+    {
+        "asistente_id": "123",
+        "evento_id": "1",
+        "estado": "cancelado"
+    },
+    {
+        "asistente_id": "1022325287",
+        "evento_id": "1",
+        "estado": "en espera"
+    },
+    {
+        "asistente_id": "123",
+        "evento_id": "15",
+        "estado": "cancelado"
+    },
+    {
+        "asistente_id": "123",
+        "evento_id": "2",
+        "estado": "cancelado"
+    },
+    {
+        "asistente_id": "1004",
+        "evento_id": "15",
+        "estado": "cancelado"
+    },
+    {
+        "asistente_id": "1004",
+        "evento_id": "2",
+        "estado": "confirmado"
+    }
+]

@@ -1,0 +1,14 @@
+[
+    {
+        "id_artista": "1001",
+        "nombre": "ferxxo",
+        "tipo_presentacion": "musica",
+        "tiempo": "2 horas"
+    },
+    {
+        "id_artista": "A005",
+        "nombre": "duvan",
+        "tipo_presentacion": "danza",
+        "tiempo": "1 hora"
+    }
+]
