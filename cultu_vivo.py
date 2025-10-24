@@ -1,4 +1,4 @@
 import modules.main as m
 
 if __name__ == "__main__":
-    m.main_login()
+    m.main_artistas()
