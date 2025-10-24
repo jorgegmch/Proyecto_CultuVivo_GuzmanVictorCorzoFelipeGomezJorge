@@ -1,5 +1,4 @@
-import modules.utils as u
-
+import utils as u
 
 # ADMINS CRUD
 def registro_eventos():
@@ -25,14 +24,36 @@ def registro_eventos():
     eventos.append(nuevo_evento)
     u.escribir_json(eventos, "eventos.json")
 
-    
-
 
 def registro_artistas():
-    pass
+    artistas=u.leer_json("Artistas.json")
+    if artistas is None:
+        artistas = []
+    print(">>>>> Nuevo Artista <<<<<\n")
+    id_artista=input("> ID : ")
+    nombre=input("> Nombre: ")
+    tipo_presentacion=input("> Tipo de presentación: ")
+    tiempo_presentacion=input("> Tiempo de Presentación: ")
+    
+    nuevo_artista= {
+        "id_artista" : id_artista,
+        "nombre": nombre,
+        "tipo_presentacion":tipo_presentacion,
+        "tiempo": tiempo_presentacion        
+    }
+    artistas.append(nuevo_artista)
+    u.escribir_json(artistas,"Artistas.json")
+    
 
 def monitorear_aforo():
-    pass
+    eventos=u.leer_json("eventos.json")
+    for i, evento in enumerate(eventos, 1):
+        print(f"Evento {i}: {evento['nombre']}")
+    op_evento= input("Seleccione un evento:  ")
+    
+    
+    
+
 
 # ADMINS REPORTES
 def participacion_artistas():
