@@ -1,14 +1,7 @@
 from modules.utils import clear_screen, pause
 
 def menu_login():
-    clear_screen()
-    print(">>>> Menú de Login <<<<<")
-    print("1. Asistente")
-    print("2. Artista")
-    print("3. Administrador")
-    print("4. Reportes")
-    print("5. Salir")
-    print()
+    pass
 
 def menu_asistentes():
     clear_screen()
@@ -18,7 +11,7 @@ def menu_asistentes():
     print("3. Ver mis inscripciones")
     print("4. Actualizar estado de inscripción")
     print("5. Cancelar inscripción")
-    print("6. Salir")
+    print("6. Cerrar Sesion")
     print()
 
 def menu_artistas():

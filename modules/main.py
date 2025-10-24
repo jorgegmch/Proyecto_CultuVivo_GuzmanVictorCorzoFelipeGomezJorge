@@ -3,23 +3,7 @@ from modules.messages import menu_login, menu_asistentes
 from modules.CRUD import ver_eventos_disponibles, inscripcion_evento, boletos_incripciones, actualizar_estado_inscripcion, cancelar_inscripcion
 
 def main_login():
-    while True:
-        menu_login()
-        opcion = input("Seleccione una opción: ")
-        if opcion == "1":
-            main_asistentes()
-        elif opcion == "2":
-            main_artistas()
-        elif opcion == "3":
-            main_admin()
-        elif opcion == "4":
-            main_reportes()
-        elif opcion == "5":
-            print("Saliendo del programa.")
-            break
-        else:
-            print("Opción inválida. Intente de nuevo.")
-            pause()
+    main_asistentes()
 
 def main_asistentes():
     while True:
@@ -41,7 +25,7 @@ def main_asistentes():
             cancelar_inscripcion()
             pause()
         elif opcion == "6":
-            print("Volviendo al menú principal.")
+            print("Cerrando sesión.")
             break
         else:
             print("Opción inválida. Intente de nuevo.")
