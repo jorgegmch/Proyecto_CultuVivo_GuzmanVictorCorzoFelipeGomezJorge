@@ -15,7 +15,12 @@ def menu_asistentes():
     print()
 
 def menu_artistas():
-    pass
+    clear_screen()
+    print(">>>> Menú de Artistas <<<<<")
+    print("1. Ver agenda de presentaciones")
+    print("2. Ver detalles de eventos asignados")
+    print("3. Cerrar Sesion")
+    print()
 
 def menu_admin():
     pass

@@ -49,10 +49,46 @@ def eventros_menos_asistentes():
 
 # ARTISTAS CRUD
 def agenda_presentaciones():
-    pass
+    artista_id = input("Ingrese su ID de artista: ")
+    asignaciones = u.leer_json("asignaciones_artistas.json")
+    if asignaciones is None or len(asignaciones) == 0:
+        print("No hay asignaciones de presentaciones.")
+        return
+    mis_asignaciones = [a for a in asignaciones if a['artista_id'] == artista_id]
+    if len(mis_asignaciones) == 0:
+        print("No tiene presentaciones asignadas.")
+        return
+    eventos = u.leer_json("eventos.json")
+    if eventos is None:
+        print("No hay eventos disponibles.")
+        return
+    print(">>>> Agenda de Presentaciones <<<<<")
+    for asignacion in mis_asignaciones:
+        evento = next((e for e in eventos if e['id'] == asignacion['evento_id']), None)
+        if evento:
+            print(f"Evento: {evento['nombre']}, Fecha: {evento['fecha']}, Hora: {evento['hora']}, Lugar: {evento['lugar']}")
+    print()
 
 def detalles_eventos():
-    pass
+    artista_id = input("Ingrese su ID de artista: ")
+    asignaciones = u.leer_json("asignaciones_artistas.json")
+    if asignaciones is None or len(asignaciones) == 0:
+        print("No hay asignaciones de presentaciones.")
+        return
+    mis_asignaciones = [a for a in asignaciones if a['artista_id'] == artista_id]
+    if len(mis_asignaciones) == 0:
+        print("No tiene presentaciones asignadas.")
+        return
+    eventos = u.leer_json("eventos.json")
+    if eventos is None:
+        print("No hay eventos disponibles.")
+        return
+    print(">>>> Detalles de Eventos Asignados <<<<<")
+    for asignacion in mis_asignaciones:
+        evento = next((e for e in eventos if e['id'] == asignacion['evento_id']), None)
+        if evento:
+            print(f"ID: {evento['id']}, Nombre: {evento['nombre']}, Fecha: {evento['fecha']}, Hora: {evento['hora']}, Lugar: {evento['lugar']}, Capacidad: {evento['capacidad']}")
+    print()
 
 # ASISTENTES CRUD
 def ver_eventos_disponibles():
