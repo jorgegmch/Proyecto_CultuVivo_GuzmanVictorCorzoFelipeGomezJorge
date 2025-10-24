@@ -1,12 +1,8 @@
 [
     {
-        "id": "A001",
-        "nombre": "Juan Pérez",
-        "genero": "Rock"
-    },
-    {
-        "id": "A002",
-        "nombre": "María García",
-        "genero": "Jazz"
+        "id_artista": "1002",
+        "nombre": "snopp Dog",
+        "tipo_presentacion": "musica",
+        "tiempo": "1 hora"
     }
 ]
