@@ -56,13 +56,96 @@ def detalles_eventos():
 
 # ASISTENTES CRUD
 def ver_eventos_disponibles():
-    pass
+    eventos = u.leer_json("eventos.json")
+    if eventos is None or len(eventos) == 0:
+        print("No hay eventos disponibles.")
+        return
+    print(">>>> Eventos Disponibles <<<<<")
+    for evento in eventos:
+        print(f"ID: {evento['id']}, Nombre: {evento['nombre']}, Fecha: {evento['fecha']}, Hora: {evento['hora']}, Lugar: {evento['lugar']}, Capacidad: {evento['capacidad']}")
+    print()
 
 def inscripcion_evento():
-    pass
+    ver_eventos_disponibles()
+    evento_id = input("Ingrese el ID del evento al que desea inscribirse: ")
+    asistente_id = input("Ingrese su ID de asistente: ")
+    # Verificar si el evento existe
+    eventos = u.leer_json("eventos.json")
+    if eventos is None:
+        print("No hay eventos disponibles.")
+        return
+    evento = next((e for e in eventos if e['id'] == evento_id), None)
+    if evento is None:
+        print("Evento no encontrado.")
+        return
+    # Verificar si ya está inscrito
+    inscripciones = u.leer_json("inscripciones.json")
+    if inscripciones is None:
+        inscripciones = []
+    if any(i['asistente_id'] == asistente_id and i['evento_id'] == evento_id for i in inscripciones):
+        print("Ya está inscrito en este evento.")
+        return
+    # Registrar inscripción con estado "en espera"
+    nueva_inscripcion = {
+        "asistente_id": asistente_id,
+        "evento_id": evento_id,
+        "estado": "en espera"
+    }
+    inscripciones.append(nueva_inscripcion)
+    u.escribir_json(inscripciones, "inscripciones.json")
+    print("Inscripción realizada con éxito. Estado: en espera.")
 
 def cancelar_inscripcion():
-    pass
+    asistente_id = input("Ingrese su ID de asistente: ")
+    evento_id = input("Ingrese el ID del evento a cancelar: ")
+    inscripciones = u.leer_json("inscripciones.json")
+    if inscripciones is None:
+        print("No hay inscripciones.")
+        return
+    inscripcion = next((i for i in inscripciones if i['asistente_id'] == asistente_id and i['evento_id'] == evento_id), None)
+    if inscripcion is None:
+        print("Inscripción no encontrada.")
+        return
+    if inscripcion['estado'] == "cancelado":
+        print("La inscripción ya está cancelada.")
+        return
+    inscripcion['estado'] = "cancelado"
+    u.escribir_json(inscripciones, "inscripciones.json")
+    print("Inscripción cancelada con éxito.")
 
 def boletos_incripciones():
-    pass
+    asistente_id = input("Ingrese su ID de asistente: ")
+    inscripciones = u.leer_json("inscripciones.json")
+    if inscripciones is None:
+        print("No hay inscripciones.")
+        return
+    mis_inscripciones = [i for i in inscripciones if i['asistente_id'] == asistente_id]
+    if len(mis_inscripciones) == 0:
+        print("No tiene inscripciones.")
+        return
+    print(">>>> Mis Inscripciones <<<<<")
+    for i in mis_inscripciones:
+        print(f"Evento ID: {i['evento_id']}, Estado: {i['estado']}")
+    print()
+
+def actualizar_estado_inscripcion():
+    asistente_id = input("Ingrese su ID de asistente: ")
+    evento_id = input("Ingrese el ID del evento: ")
+    nuevo_estado = input("Ingrese el nuevo estado (confirmado/cancelado): ").lower()
+    if nuevo_estado not in ["confirmado", "cancelado"]:
+        print("Estado inválido. Debe ser 'confirmado' o 'cancelado'.")
+        return
+    inscripciones = u.leer_json("inscripciones.json")
+    if inscripciones is None:
+        print("No hay inscripciones.")
+        return
+    inscripcion = next((i for i in inscripciones if i['asistente_id'] == asistente_id and i['evento_id'] == evento_id), None)
+    if inscripcion is None:
+        print("Inscripción no encontrada.")
+        return
+    if inscripcion['estado'] != "en espera":
+        print("Solo se puede actualizar el estado si está en 'en espera'.")
+        return
+    inscripcion['estado'] = nuevo_estado
+    u.escribir_json(inscripciones, "inscripciones.json")
+    print(f"Estado actualizado a '{nuevo_estado}' con éxito.")
