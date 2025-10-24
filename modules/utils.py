@@ -22,25 +22,10 @@ def asignar_boleto():
 def validador_imput():
     pass
 
-def escribir_json(datos, archivo):
-    try:
-        with open(archivo, 'w', encoding='utf-8') as f:
-            json.dump(datos, f, indent=4, ensure_ascii=False)
-        print(f"Datos escritos exitosamente en {archivo}")
-    except Exception as e:
-        print(f"Error al escribir en {archivo}: {e}")
+def escribir_json(filename, data):
+    with open(filename, 'w') as f:
+        json.dump(data, f, indent=4)
 
-def leer_json(archivo):
-    try:
-        with open(archivo, 'r', encoding='utf-8') as f:
-            datos = json.load(f)
-        return datos
-    except FileNotFoundError:
-        print(f"El archivo {archivo} no existe.")
-        return None
-    except json.JSONDecodeError:
-        print(f"Error al decodificar JSON en {archivo}.")
-        return None
-    except Exception as e:
-        print(f"Error al leer {archivo}: {e}")
-        return None
+def leer_json(filename):
+    with open(filename, 'r') as f:
+        return json.load(f)

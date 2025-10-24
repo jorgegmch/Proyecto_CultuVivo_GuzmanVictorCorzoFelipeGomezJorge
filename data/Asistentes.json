@@ -1,0 +1,23 @@
+[
+    {
+        "nombre": "felipe",
+        "cedula": "111",
+        "correo": "@dwedew",
+        "estado": "",
+        "tipo_boleta": ""
+    },
+    {
+        "nombre": "andres corzo",
+        "cedula": "1002",
+        "correo": "@sdsd",
+        "estado": "",
+        "tipo_boleta": ""
+    },
+    {
+        "nombre": "juan",
+        "cedula": "1004",
+        "correo": "@dcfefc",
+        "estado": "",
+        "tipo_boleta": ""
+    }
+]

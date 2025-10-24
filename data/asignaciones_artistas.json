@@ -1,10 +1,10 @@
 [
     {
-        "artista_id": "A001",
+        "artista_id": "1001",
         "evento_id": "1"
     },
     {
-        "artista_id": "A002",
+        "artista_id": "1001",
         "evento_id": "2"
     }
 ]
