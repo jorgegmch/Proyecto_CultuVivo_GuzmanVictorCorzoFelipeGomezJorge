@@ -1,6 +1,6 @@
 from modules.utils import clear_screen, pause
-from modules.messages import menu_login, menu_asistentes
-from modules.CRUD import ver_eventos_disponibles, inscripcion_evento, boletos_incripciones, actualizar_estado_inscripcion, cancelar_inscripcion
+from modules.messages import menu_login, menu_asistentes, menu_artistas
+from modules.CRUD import ver_eventos_disponibles, inscripcion_evento, boletos_incripciones, actualizar_estado_inscripcion, cancelar_inscripcion, agenda_presentaciones, detalles_eventos
 
 def main_login():
     main_asistentes()
