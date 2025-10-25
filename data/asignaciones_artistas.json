@@ -10,5 +10,9 @@
     {
         "artista_id": "A002",
         "evento_id": "4"
+    },
+    {
+        "artista_id": "A005",
+        "evento_id": "2"
     }
 ]

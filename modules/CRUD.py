@@ -122,16 +122,77 @@ def asignar_artista_evento():
     print(f"Artista {artista['nombre']} asignado al evento {evento['nombre']} con éxito.")
 
 def monitorear_aforo():
-    eventos=u.leer_json("data/eventos.json")
+    eventos = u.leer_json("data/eventos.json")
+    if eventos is None or len(eventos) == 0:
+        print("No hay eventos disponibles.")
+        return
+
+    # Mostrar eventos con número de asistentes confirmados
+    print(">>>> Monitoreo de Aforo <<<<<")
     for i, evento in enumerate(eventos, 1):
-        print(f"Evento {i}: {evento['nombre']}")
-    op_evento= input("Seleccione un evento:  ")
+        # Contar asistentes confirmados
+        inscripciones = u.leer_json("data/inscripciones.json")
+        if inscripciones is None:
+            count = 0
+        else:
+            count = sum(1 for i in inscripciones if i['evento_id'] == evento['id'] and i['estado'] == 'confirmado')
+        bloqueado = evento.get("bloqueado", False)
+        status = "Bloqueado" if bloqueado else "Abierto"
+        print(f"{i}. {evento['nombre']} - Asistentes Confirmados: {count}/{evento['capacidad']} - Estado: {status}")
+
+    try:
+        op_evento = int(input("Seleccione un evento (número): ")) - 1
+        if op_evento < 0 or op_evento >= len(eventos):
+            print("Selección inválida.")
+            return
+    except ValueError:
+        print("Entrada inválida.")
+        return
+
+    evento = eventos[op_evento]
+    print(f"\n>>>> Detalles del Evento: {evento['nombre']} <<<<<")
+    print(f"ID: {evento['id']}")
+    print(f"Fecha: {evento['fecha']}")
+    print(f"Hora: {evento['hora']}")
+    print(f"Lugar: {evento['lugar']}")
+    print(f"Capacidad: {evento['capacidad']}")
+
+    # Contar asistentes
+    if inscripciones is None:
+        count = 0
+    else:
+        count = sum(1 for i in inscripciones if i['evento_id'] == evento['id'] and i['estado'] == 'confirmado')
+    print(f"Asistentes Confirmados: {count}")
+
+    bloqueado = evento.get("bloqueado", False)
+    if bloqueado:
+        print("Estado: Bloqueado (inscripciones no permitidas)")
+    else:
+        print("Estado: Abierto")
+
+    # Opción para bloquear/desbloquear
+    if bloqueado:
+        opcion = input("¿Desea desbloquear las inscripciones? (s/n): ").lower()
+        if opcion == 's':
+            evento["bloqueado"] = False
+            u.escribir_json("data/eventos.json", eventos)
+            print("Inscripciones desbloqueadas.")
+        else:
+            print("Sin cambios.")
+    else:
+        opcion = input("¿Desea bloquear las inscripciones? (s/n): ").lower()
+        if opcion == 's':
+            evento["bloqueado"] = True
+            u.escribir_json("data/eventos.json", eventos)
+            print("Inscripciones bloqueadas.")
+        else:
+            print("Sin cambios.")
 
 
 # ADMINS REPORTES
 def participacion_artistas():
-    artistas = u.leer_json("artistas.json")
-    asignaciones = u.leer_json("asignaciones_artistas.json")
+    artistas = u.leer_json("data/artistas.json")
+    asignaciones = u.leer_json("data/asignaciones_artistas.json")
     if artistas is None or asignaciones is None:
         print("No hay datos disponibles.")
         return
@@ -146,7 +207,7 @@ def participacion_artistas():
     print()
 
 def ver_proximos_eventos():
-    eventos = u.leer_json("eventos.json")
+    eventos = u.leer_json("data/eventos.json")
     if eventos is None:
         print("No hay eventos disponibles.")
         return
@@ -166,7 +227,7 @@ def ver_proximos_eventos():
     print()
 
 def listado_asistentes():
-    asistentes = u.leer_json("Asistentes.json")
+    asistentes = u.leer_json("data/Asistentes.json")
     if asistentes is None or len(asistentes) == 0:
         print("No hay asistentes registrados.")
         return
@@ -176,8 +237,8 @@ def listado_asistentes():
     print()
 
 def eventos_menos_asistentes():
-    eventos = u.leer_json("eventos.json")
-    inscripciones = u.leer_json("inscripciones.json")
+    eventos = u.leer_json("data/eventos.json")
+    inscripciones = u.leer_json("data/inscripciones.json")
     if eventos is None or inscripciones is None:
         print("No hay datos disponibles.")
         return
@@ -286,8 +347,13 @@ def ver_eventos_disponibles():
     if eventos is None or len(eventos) == 0:
         print("No hay eventos disponibles.")
         return
+    # Filtrar eventos no bloqueados
+    eventos_disponibles = [e for e in eventos if not e.get("bloqueado", False)]
+    if len(eventos_disponibles) == 0:
+        print("No hay eventos disponibles.")
+        return
     print(">>>> Eventos Disponibles <<<<<")
-    for evento in eventos:
+    for evento in eventos_disponibles:
         print(f"N°:{evento['id']}\n Nombre: {evento['nombre']}\n Fecha: {evento['fecha']}\n Hora: {evento['hora']}\n Lugar: {evento['lugar']}\n")
     print()
 
@@ -304,6 +370,10 @@ def inscripcion_evento():
     evento = next((e for e in eventos if e['id'] == evento_id), None)
     if evento is None:
         print("Evento no encontrado.")
+        return
+    # Verificar si el evento está bloqueado
+    if evento.get("bloqueado", False):
+        print("Las inscripciones para este evento están bloqueadas.")
         return
     # Verificar si ya está inscrito
     inscripciones = u.leer_json("data/inscripciones.json")
