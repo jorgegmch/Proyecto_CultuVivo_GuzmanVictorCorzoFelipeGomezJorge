@@ -1,0 +1,26 @@
+{
+    "asistente": {
+        "login": [
+            "111",
+            "1002",
+            "1004",
+            "1008"
+        ]
+    },
+    "admin": {
+        "login": [
+            "Root",
+            "Admin"
+        ]
+    },
+    "artista": {
+        "login": [
+            "A001",
+            "A002",
+            "A002"
+        ]
+    },    
+    "salir":{
+        "login": "0"
+    }
+}

@@ -1,5 +1,18 @@
 import modules.utils as u
 
+#login
+def login():
+    try:
+        usuarios = u.leer_json("Usuarios.json")
+    except FileNotFoundError:
+        usuarios = {}
+    usuario = input("   Login: ")
+    print("\nUsuario no existe!!❌   \n\nIntente nuevamente o precione '0' para salir.\n ")
+    for k, v in usuarios.items():
+        for login in v["login"]:
+            if login == usuario:
+                return k
+
 
 # ADMINS CRUD
 def registro_eventos():
@@ -23,16 +36,34 @@ def registro_eventos():
         "capacidad": capacidad
     }
     eventos.append(nuevo_evento)
-    u.escribir_json(eventos, "eventos.json")
-
-    
-
+    u.escribir_json("eventos.json",eventos)
 
 def registro_artistas():
-    pass
+    artistas=u.leer_json("artistas.json")
+    if artistas is None:
+        artistas = []
+    print(">>>>> Nuevo Artista <<<<<\n")
+    id_artista=input("> ID : ")
+    nombre=input("> Nombre: ")
+    tipo_presentacion=input("> Tipo de presentación: ")
+    tiempo_presentacion=input("> Tiempo de Presentación: ")
+    
+    nuevo_artista= {
+        "id_artista" : id_artista,
+        "nombre": nombre,
+        "tipo_presentacion":tipo_presentacion,
+        "tiempo": tiempo_presentacion        
+    }
+    artistas.append(nuevo_artista)
+    u.escribir_json("artistas.json",artistas)
+
 
 def monitorear_aforo():
-    pass
+    eventos=u.leer_json("eventos.json")
+    for i, evento in enumerate(eventos, 1):
+        print(f"Evento {i}: {evento['nombre']}")
+    op_evento= input("Seleccione un evento:  ")
+    
 
 # ADMINS REPORTES
 def participacion_artistas():
@@ -49,20 +80,181 @@ def eventros_menos_asistentes():
 
 # ARTISTAS CRUD
 def agenda_presentaciones():
-    pass
+    artista_id = input("Ingrese su ID de artista: ")
+    asignaciones = u.leer_json("asignaciones_artistas.json")
+    if asignaciones is None or len(asignaciones) == 0:
+        print("No hay asignaciones de presentaciones.")
+        return
+    mis_asignaciones = [a for a in asignaciones if a['artista_id'] == artista_id]
+    if len(mis_asignaciones) == 0:
+        print("No tiene presentaciones asignadas.")
+        return
+    eventos = u.leer_json("eventos.json")
+    if eventos is None:
+        print("No hay eventos disponibles.")
+        return
+    print(">>>> Agenda de Presentaciones <<<<<\n")
+    for asignacion in mis_asignaciones:
+        evento = next((e for e in eventos if e['id'] == asignacion['evento_id']), None)
+        if evento:
+            print(f"Evento: {evento['nombre']} \nFecha: {evento['fecha']} \nHora: {evento['hora']} \nLugar: {evento['lugar']}\n")
+    print()
 
 def detalles_eventos():
-    pass
+    artista_id = input("Ingrese su ID de artista: ")
+    asignaciones = u.leer_json("asignaciones_artistas.json")
+    if asignaciones is None or len(asignaciones) == 0:
+        print("No hay asignaciones de presentaciones.")
+        return
+    mis_asignaciones = [a for a in asignaciones if a['artista_id'] == artista_id]
+    if len(mis_asignaciones) == 0:
+        print("No tiene presentaciones asignadas.")
+        return
+    eventos = u.leer_json("eventos.json")
+    if eventos is None:
+        print("No hay eventos disponibles.")
+        return
+    print(">>>> Detalles de Eventos Asignados <<<<<")
+    for asignacion in mis_asignaciones:
+        evento = next((e for e in eventos if e['id'] == asignacion['evento_id']), None)
+        if evento:
+            print(f"ID: {evento['id']}, Nombre: {evento['nombre']}, Fecha: {evento['fecha']}, Hora: {evento['hora']}, Lugar: {evento['lugar']}, Capacidad: {evento['capacidad']}")
+    print()
 
 # ASISTENTES CRUD
+def nuevo_asistente():
+    nombre = input("Nombre Completo: ")
+    id = input("Cedula: ")
+    correo = input("Correo: ")
+    
+    # Leer asistentes existentes o iniciar lista vacía
+    try:
+        total_asistentes = u.leer_json("Asistentes.json")
+    except FileNotFoundError:
+        total_asistentes = []
+
+    # Verificar si el asistente ya existe
+    for asistente in total_asistentes:
+        if asistente["cedula"] == id:
+            print("Ese asistente ya existe")
+            return
+
+    # Agregar nuevo asistente
+    total_asistentes.append({
+        "nombre": nombre,
+        "cedula": id,
+        "correo": correo,
+        "estado":"",
+        "tipo_boleta": ""
+    })
+    
+    # Leer usuarios existentes o iniciar dict por defecto
+    try:
+        asistentes = u.leer_json("Usuarios.json")
+    except FileNotFoundError:
+        asistentes = {"asistente": {"login": []}}
+    
+    # Agregar ID al login si no existe
+    if id not in asistentes["asistente"]["login"]:
+        asistentes["asistente"]["login"].append(id)
+    
+    # Escribir de vuelta
+    u.escribir_json("Asistentes.json", total_asistentes)
+    u.escribir_json("Usuarios.json", asistentes)
+    print(f"{nombre} Registrado correctamete! ")
+
 def ver_eventos_disponibles():
-    pass
+    eventos = u.leer_json("eventos.json")
+    if eventos is None or len(eventos) == 0:
+        print("No hay eventos disponibles.")
+        return
+    print(">>>> Eventos Disponibles <<<<<")
+    for evento in eventos:
+        print(f"N°:{evento['id']}\n Nombre: {evento['nombre']}\n Fecha: {evento['fecha']}\n Hora: {evento['hora']}\n Lugar: {evento['lugar']}\n")
+    print()
+
 
 def inscripcion_evento():
-    pass
+    ver_eventos_disponibles()
+    evento_id = input("Ingrese el N° del evento al que desea inscribirse: ")
+    asistente_id = input("Ingrese su ID de asistente: ")
+    # Verificar si el evento existe
+    eventos = u.leer_json("eventos.json")
+    if eventos is None:
+        print("No hay eventos disponibles.")
+        return
+    evento = next((e for e in eventos if e['id'] == evento_id), None)
+    if evento is None:
+        print("Evento no encontrado.")
+        return
+    # Verificar si ya está inscrito
+    inscripciones = u.leer_json("inscripciones.json")
+    if inscripciones is None:
+        inscripciones = []
+    if any(i['asistente_id'] == asistente_id and i['evento_id'] == evento_id for i in inscripciones):
+        print("Ya está inscrito en este evento.")
+        return
+    # Registrar inscripción con estado "en espera"
+    nueva_inscripcion = {
+        "asistente_id": asistente_id,
+        "evento_id": evento_id,
+        "estado": "en espera"
+    }
+    inscripciones.append(nueva_inscripcion)
+    u.escribir_json("inscripciones.json", inscripciones)    
+    print("Inscripción realizada con éxito. Estado: en espera.")
 
 def cancelar_inscripcion():
-    pass
+    asistente_id = input("Ingrese su ID de asistente: ")
+    evento_id = input("Ingrese el N° del evento a cancelar: ")
+    inscripciones = u.leer_json("inscripciones.json")
+    if inscripciones is None:
+        print("No hay inscripciones.")
+        return
+    inscripcion = next((i for i in inscripciones if i['asistente_id'] == asistente_id and i['evento_id'] == evento_id), None)
+    if inscripcion is None:
+        print("Inscripción no encontrada.")
+        return
+    if inscripcion['estado'] == "cancelado":
+        print("La inscripción ya está cancelada.")
+        return
+    inscripcion['estado'] = "cancelado"
+    u.escribir_json("inscripciones.json", inscripciones)
+    print("Inscripción cancelada con éxito.")
 
 def boletos_incripciones():
-    pass
+    asistente_id = input("Ingrese su ID de asistente: ")
+    inscripciones = u.leer_json("inscripciones.json")
+    if inscripciones is None:
+        print("No hay inscripciones.")
+        return
+    mis_inscripciones = [i for i in inscripciones if i['asistente_id'] == asistente_id]
+    if len(mis_inscripciones) == 0:
+        print("No tiene inscripciones.")
+        return
+    print("\n>>>> Mis Inscripciones <<<<<\n")
+    for i in mis_inscripciones:
+        print(f"Evento N°: {i['evento_id']}, Estado: {i['estado']}")
+    print()
+
+def actualizar_estado_inscripcion():
+    asistente_id = input("Ingrese su ID de asistente: ")
+    evento_id = input("Ingrese el N° del evento: ")
+    nuevo_estado = input("Ingrese el nuevo estado (confirmado/cancelado): ").lower()
+    if nuevo_estado not in ["confirmado", "cancelado"]:
+        print("Estado inválido. Debe ser 'confirmado' o 'cancelado'.")
+        return
+    inscripciones = u.leer_json("inscripciones.json")
+    if inscripciones is None:
+        print("No hay inscripciones.")
+        return
+    inscripcion = next((i for i in inscripciones if i['asistente_id'] == asistente_id and i['evento_id'] == evento_id), None)
+    if inscripcion is None:
+        print("Inscripción no encontrada.")
+        return
+    if inscripcion['estado'] != "en espera":
+        print("Solo se puede actualizar el estado si está en 'en espera'.")
+        return
+    inscripcion['estado'] = nuevo_estado
+    u.escribir_json("inscripciones.json", inscripciones)
+    print(f"Estado actualizado a '{nuevo_estado}' con éxito.")
