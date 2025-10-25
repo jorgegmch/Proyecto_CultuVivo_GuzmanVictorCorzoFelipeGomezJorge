@@ -5,11 +5,11 @@ def main():
     u.clear_screen()
     bandera=True
     while bandera:
-        opcion=m.primer_menu()
-        if opcion == "2":
+        opcion1=m.primer_menu()
+        if opcion1 == "2":
             c.nuevo_asistente()
             u.pause()
-        elif opcion == "1":        
+        elif opcion1 == "1":        
             isActive= True
             while isActive:            
                 rol = c.login()       
@@ -77,15 +77,6 @@ def main():
                         elif option == "0":
                             running= False
                             u.clear_screen()
-
-
-
-
-
-                    
-                    
-
-
 
 
                 elif rol == "salir":
