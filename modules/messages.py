@@ -34,7 +34,7 @@ def menu_admin():
     print("Seleccione una opción\n")
     print("1. Crear Evento")
     print("2. Agregar artistas")
-    print("3. Añadir Artistas a Evento")
+    print("3. Asignar Artistas a Evento")
     print("4. Monitorear capacidad eventos")
     print("5. Reportes")
     print("0. Cerrar Sesion")

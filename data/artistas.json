@@ -1,0 +1,14 @@
+[
+    {
+        "id_artista": "A001",
+        "nombre": "ferxxo",
+        "tipo_presentacion": "musica",
+        "tiempo": "2 horas"
+    },
+    {
+        "id_artista": "A002",
+        "nombre": "JUAN",
+        "tipo_presentacion": "DANZA",
+        "tiempo": "1 HORA"
+    }
+]

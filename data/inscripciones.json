@@ -1,32 +1,12 @@
 [
     {
-        "asistente_id": "123",
-        "evento_id": "1",
-        "estado": "cancelado"
-    },
-    {
-        "asistente_id": "1022325287",
-        "evento_id": "1",
+        "asistente_id": "1001",
+        "evento_id": "4",
         "estado": "en espera"
     },
     {
-        "asistente_id": "123",
-        "evento_id": "15",
+        "asistente_id": "1002",
+        "evento_id": "501",
         "estado": "cancelado"
-    },
-    {
-        "asistente_id": "123",
-        "evento_id": "2",
-        "estado": "cancelado"
-    },
-    {
-        "asistente_id": "1004",
-        "evento_id": "15",
-        "estado": "cancelado"
-    },
-    {
-        "asistente_id": "1004",
-        "evento_id": "2",
-        "estado": "confirmado"
     }
 ]

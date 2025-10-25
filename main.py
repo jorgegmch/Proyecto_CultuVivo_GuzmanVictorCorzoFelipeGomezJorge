@@ -46,10 +46,10 @@ def main():
                             u.pause()
                         
                 elif rol == "admin":
-                    running = True    
+                    running = True
                     while running:
                         u.clear_screen()
-                        option = m.menu_admin()  
+                        option = m.menu_admin()
                         if option == "1":
                             u.clear_screen()
                             c.registro_eventos()
@@ -58,9 +58,13 @@ def main():
                             u.clear_screen()
                             c.registro_artistas()
                             u.pause()
+                        elif option == "3":
+                            u.clear_screen()
+                            c.asignar_artista_evento()
+                            u.pause()
                         elif option == "0":
                             running= False
-                            u.clear_screen()              
+                            u.clear_screen()
 
                 elif rol == "artista":
                     running = True    
