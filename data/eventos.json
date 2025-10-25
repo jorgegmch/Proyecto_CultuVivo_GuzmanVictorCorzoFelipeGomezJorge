@@ -30,5 +30,13 @@
         "hora": "5 pm",
         "lugar": "barichara",
         "capacidad": "2000"
+    },
+    {
+        "id": "501",
+        "nombre": "Concirto jazz",
+        "fecha": "25-10-2026",
+        "hora": "16:00",
+        "lugar": "movistar arena",
+        "capacidad": "4000"
     }
 ]

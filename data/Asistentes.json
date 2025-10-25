@@ -1,22 +1,15 @@
 [
     {
         "nombre": "felipe",
-        "cedula": "111",
-        "correo": "@dwedew",
+        "cedula": "1001",
+        "correo": "@sdrfg",
         "estado": "",
         "tipo_boleta": ""
     },
     {
-        "nombre": "andres corzo",
+        "nombre": "jorge",
         "cedula": "1002",
-        "correo": "@sdsd",
-        "estado": "",
-        "tipo_boleta": ""
-    },
-    {
-        "nombre": "juan",
-        "cedula": "1004",
-        "correo": "@dcfefc",
+        "correo": "@hasjhc",
         "estado": "",
         "tipo_boleta": ""
     }
