@@ -1,4 +1,5 @@
 import modules.utils as u
+from datetime import datetime
 
 #login
 def login():
@@ -129,16 +130,71 @@ def monitorear_aforo():
 
 # ADMINS REPORTES
 def participacion_artistas():
-    pass
+    artistas = u.leer_json("artistas.json")
+    asignaciones = u.leer_json("asignaciones_artistas.json")
+    if artistas is None or asignaciones is None:
+        print("No hay datos disponibles.")
+        return
+    participacion = {}
+    for artista in artistas:
+        id_artista = artista['id_artista']
+        count = sum(1 for a in asignaciones if a['artista_id'] == id_artista)
+        participacion[id_artista] = {'nombre': artista['nombre'], 'eventos': count}
+    print(">>>> Participación de Artistas <<<<<")
+    for id_artista, data in participacion.items():
+        print(f"ID: {id_artista}, Nombre: {data['nombre']}, Eventos: {data['eventos']}")
+    print()
 
 def ver_proximos_eventos():
-    pass
+    eventos = u.leer_json("eventos.json")
+    if eventos is None:
+        print("No hay eventos disponibles.")
+        return
+    hoy = datetime.now().date()
+    proximos = []
+    for evento in eventos:
+        try:
+            fecha_evento = datetime.strptime(evento['fecha'], '%Y-%m-%d').date()
+            if fecha_evento >= hoy:
+                proximos.append(evento)
+        except ValueError:
+            continue  # Skip invalid dates
+    proximos.sort(key=lambda x: x['fecha'])
+    print(">>>> Próximos Eventos <<<<<")
+    for evento in proximos:
+        print(f"ID: {evento['id']}, Nombre: {evento['nombre']}, Fecha: {evento['fecha']}, Hora: {evento['hora']}, Lugar: {evento['lugar']}")
+    print()
 
 def listado_asistentes():
-    pass
+    asistentes = u.leer_json("Asistentes.json")
+    if asistentes is None or len(asistentes) == 0:
+        print("No hay asistentes registrados.")
+        return
+    print(">>>> Listado de Asistentes <<<<<")
+    for asistente in asistentes:
+        print(f"Nombre: {asistente['nombre']}, Cédula: {asistente['cedula']}, Correo: {asistente['correo']}, Estado: {asistente['estado']}, Tipo Boleta: {asistente['tipo_boleta']}")
+    print()
 
-def eventros_menos_asistentes():
-    pass
+def eventos_menos_asistentes():
+    eventos = u.leer_json("eventos.json")
+    inscripciones = u.leer_json("inscripciones.json")
+    if eventos is None or inscripciones is None:
+        print("No hay datos disponibles.")
+        return
+    conteo = {}
+    for evento in eventos:
+        id_evento = evento['id']
+        count = sum(1 for i in inscripciones if i['evento_id'] == id_evento and i['estado'] == 'confirmado')
+        conteo[id_evento] = {'nombre': evento['nombre'], 'asistentes': count}
+    if not conteo:
+        print("No hay eventos con asistentes confirmados.")
+        return
+    min_asistentes = min(conteo.values(), key=lambda x: x['asistentes'])['asistentes']
+    eventos_menos = [data for data in conteo.values() if data['asistentes'] == min_asistentes]
+    print(">>>> Eventos con Menos Asistentes Confirmados <<<<<")
+    for evento in eventos_menos:
+        print(f"Nombre: {evento['nombre']}, Asistentes Confirmados: {evento['asistentes']}")
+    print()
 
 # ARTISTAS CRUD
 def agenda_presentaciones():
