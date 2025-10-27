@@ -34,10 +34,7 @@ def main():
                             u.clear_screen()
                             c.actualizar_estado_inscripcion()
                             u.pause()
-                        elif opcion == "5":
-                            u.clear_screen()
-                            c.cancelar_inscripcion()
-                            u.pause()
+                        # Opción 5 eliminada: la cancelación se gestiona mediante 'Actualizar estado de inscripción'
                         elif opcion == "0":                            
                             print("Cerrando sesión.")
                             running = False
