@@ -62,6 +62,37 @@ def main():
                             u.clear_screen()
                             c.asignar_artista_evento()
                             u.pause()
+                        elif option == "4":
+                            u.clear_screen()
+                            c.monitorear_aforo()
+                            u.pause()
+                        elif option == "5":
+                            u.clear_screen()
+                            running_reportes = True
+                            while running_reportes:
+                                opcion_reportes = m.menu_reportes()
+                                if opcion_reportes == "1":
+                                    u.clear_screen()
+                                    c.participacion_artistas()
+                                    u.pause()
+                                elif opcion_reportes == "2":
+                                    u.clear_screen()
+                                    c.ver_proximos_eventos()
+                                    u.pause()
+                                elif opcion_reportes == "3":
+                                    u.clear_screen()
+                                    c.listado_asistentes()
+                                    u.pause()
+                                elif opcion_reportes == "4":
+                                    u.clear_screen()
+                                    c.eventos_menos_asistentes()
+                                    u.pause()
+                                elif opcion_reportes == "0":
+                                    running_reportes = False
+                                    u.clear_screen()
+                                else:
+                                    print("Opción inválida. Intente de nuevo.")
+                                    u.pause()
                         elif option == "0":
                             running= False
                             u.clear_screen()
@@ -75,9 +106,6 @@ def main():
                             u.clear_screen()
                             c.agenda_presentaciones()
                             u.pause()
-                        elif option == "2":
-                            c.detalles_eventos() #funcion innecesaria por que la informacion que muestra es igual a la primera 
-                            u.pause
                         elif option == "0":
                             running= False
                             u.clear_screen()
@@ -86,9 +114,9 @@ def main():
                 elif rol == "salir":
                     u.clear_screen()
                     isActive=False
-                    
 
-        elif opcion == "0":
+
+        elif opcion1 == "0":
             bandera=False
             print("¡Hasta luego!")
 

@@ -1,7 +1,7 @@
 import modules.utils as u
 def primer_menu():
-    print("Bienvenido al Programa Eventos FJV\n")
-    print("Seleccione una opción\n")
+    print("Bienvenido al Programa Eventos CultuVivo\n")
+    print("Seleccione una opción!")
     print("1. Ingresar")
     print("2. Registrarse como asistente")
     print("0. Salir. ")
@@ -24,7 +24,6 @@ def menu_artistas():
     u.clear_screen()
     print(">>>> Menú de Artistas <<<<<")
     print("1. Ver agenda de presentaciones")
-    print("2. Ver detalles de eventos asignados")
     print("0. Cerrar Sesion")
     opcion=input(">>  ")
     return opcion
@@ -48,5 +47,6 @@ def menu_reportes():
     print("2. Eventos proximos")
     print("3. Lista de asistentes registrados")#registrados en el programa en general
     print("4. Eventos con menos asistentes")
+    print("0. Salir. ")
     opcion= input(">>   ")
     return opcion

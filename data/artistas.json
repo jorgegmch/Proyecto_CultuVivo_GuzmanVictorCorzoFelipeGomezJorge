@@ -10,5 +10,11 @@
         "nombre": "JUAN",
         "tipo_presentacion": "DANZA",
         "tiempo": "1 HORA"
+    },
+    {
+        "id_artista": "A005",
+        "nombre": "Juanes",
+        "tipo_presentacion": "musical",
+        "tiempo": "1 h 45 m"
     }
 ]

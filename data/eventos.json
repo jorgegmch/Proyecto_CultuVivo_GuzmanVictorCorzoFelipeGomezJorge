@@ -5,7 +5,8 @@
         "fecha": "2023-10-01",
         "hora": "20:00",
         "lugar": "Estadio Nacional",
-        "capacidad": "5000"
+        "capacidad": "5000",
+        "bloqueado": true
     },
     {
         "id": "2",
