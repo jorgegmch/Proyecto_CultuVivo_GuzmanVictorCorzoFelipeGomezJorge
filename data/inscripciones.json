@@ -1,17 +1,3 @@
 [
-    {
-        "asistente_id": "1001",
-        "evento_id": "4",
-        "estado": "en espera"
-    },
-    {
-        "asistente_id": "1002",
-        "evento_id": "501",
-        "estado": "cancelado"
-    },
-    {
-        "asistente_id": "1001",
-        "evento_id": "501",
-        "estado": "en espera"
-    }
+   
 ]
