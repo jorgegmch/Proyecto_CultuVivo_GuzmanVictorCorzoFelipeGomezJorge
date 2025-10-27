@@ -8,8 +8,10 @@ def primer_menu():
     opcion=input(">>  ")
     return opcion
 
+
 def menu_asistentes():
     u.clear_screen()
+
     print(">>>> 🎟️  Menú de Asistentes <<<<<")
     print("1. ✅  Ver eventos disponibles")
     print("2. ✍️  Inscribirse en un evento")
