@@ -443,6 +443,42 @@ def actualizar_estado_inscripcion():
     if inscripcion['estado'] != "en espera":
         print("Solo se puede actualizar el estado si está en 'en espera'.")
         return
-    inscripcion['estado'] = nuevo_estado
-    u.escribir_json("data/inscripciones.json", inscripciones)
-    print(f"Estado actualizado a '{nuevo_estado}' con éxito.")
+
+    # Leer eventos para verificar capacidad y bloqueo
+    eventos = u.leer_json("data/eventos.json")
+    if eventos is None:
+        print("No hay eventos disponibles.")
+        return
+    evento = next((e for e in eventos if e['id'] == evento_id), None)
+    if evento is None:
+        print("Evento no encontrado.")
+        return
+    if evento.get("bloqueado", False):
+        print("Las inscripciones para este evento están bloqueadas.")
+        return
+
+    if nuevo_estado == "confirmado":
+        # Contar confirmados actuales
+        count_confirmados = sum(1 for i in inscripciones if i['evento_id'] == evento_id and i['estado'] == 'confirmado')
+        capacidad = int(evento['capacidad'])
+        if count_confirmados + 1 > capacidad:
+            print("El evento ya está lleno y no hay más cupos disponibles.")
+            # Bloquear el evento
+            evento["bloqueado"] = True
+            u.escribir_json("data/eventos.json", eventos)
+            return
+        # Confirmar la inscripción
+        inscripcion['estado'] = nuevo_estado
+        u.escribir_json("data/inscripciones.json", inscripciones)
+        print(f"Estado actualizado a '{nuevo_estado}' con éxito.")
+        # Verificar si ahora está lleno y bloquear
+        count_confirmados += 1
+        if count_confirmados == capacidad:
+            evento["bloqueado"] = True
+            u.escribir_json("data/eventos.json", eventos)
+            print("El evento ha alcanzado su capacidad máxima y ha sido bloqueado automáticamente.")
+    else:
+        # Para cancelado, proceder normalmente
+        inscripcion['estado'] = nuevo_estado
+        u.escribir_json("data/inscripciones.json", inscripciones)
+        print(f"Estado actualizado a '{nuevo_estado}' con éxito.")
