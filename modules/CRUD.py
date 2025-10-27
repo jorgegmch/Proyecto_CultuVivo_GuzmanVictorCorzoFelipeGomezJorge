@@ -1,5 +1,4 @@
 import modules.utils as u
-from datetime import datetime
 
 #login
 def login():
@@ -14,7 +13,7 @@ def login():
         for login in v["login"]:
             if login == usuario:
                 return k
-    print("\nUsuario no existe!!❌   \n\nIntente nuevamente o precione '0' para salir.\n ")
+    print("\nUsuario no existe!!❌   \n\nIntente nuevamente o presione '0' para salir.\n ")
     return None
 
 
@@ -23,13 +22,17 @@ def registro_eventos():
     eventos = u.leer_json("data/eventos.json")
     if eventos is None:
         eventos = []
-    print(">>>>  Nuevo Evento <<<<<\n")
+    print(">>>>  ➕ Nuevo Evento <<<<<\n")
     id = input("ID Evento: ")
     nombre = input("Nombre: ")
-    fecha = input("Fecha: ")
+    fecha = input("Fecha (AAAA-MM-DD): ")
     hora = input("Hora: ")
     lugar = input("Lugar: ")
     capacidad = input("Aforo: ")
+    estado = input("Estado del evento (activo/proximo): ").lower()
+    while estado not in ["activo", "proximo"]:
+        print("Estado inválido. Debe ser 'activo' o 'proximo'.")
+        estado = input("Estado del evento (activo/proximo): ").lower()
 
     nuevo_evento = {
         "id": id,
@@ -37,7 +40,8 @@ def registro_eventos():
         "fecha": fecha,
         "hora": hora,
         "lugar": lugar,
-        "capacidad": capacidad
+        "capacidad": capacidad,
+        "estado": estado
     }
     eventos.append(nuevo_evento)
     u.escribir_json("data/eventos.json",eventos)
@@ -47,7 +51,7 @@ def registro_artistas():
         artistas = u.leer_json("data/artistas.json")
     except FileNotFoundError:
         artistas = []
-    print(">>>>> Nuevo Artista <<<<<\n")
+    print(">>>>> 🎨 Nuevo Artista <<<<<\n")
     id_artista=input("> ID : ")
     nombre=input("> Nombre: ")
     tipo_presentacion=input("> Tipo de presentación: ")
@@ -81,7 +85,7 @@ def asignar_artista_evento():
     if eventos is None or len(eventos) == 0:
         print("No hay eventos disponibles.")
         return
-    print(">>>> Eventos Disponibles <<<<<")
+    print(">>>> 📅 Eventos Disponibles <<<<<")
     for evento in eventos:
         print(f"ID: {evento['id']}, Nombre: {evento['nombre']}")
     evento_id = input("Ingrese el ID del evento: ")
@@ -95,7 +99,7 @@ def asignar_artista_evento():
     if artistas is None or len(artistas) == 0:
         print("No hay artistas disponibles.")
         return
-    print(">>>> Artistas Disponibles <<<<<")
+    print(">>>> 🎨 Artistas Disponibles <<<<<")
     for artista in artistas:
         print(f"ID: {artista['id_artista']}, Nombre: {artista['nombre']}")
     artista_id = input("Ingrese el ID del artista: ")
@@ -127,9 +131,15 @@ def monitorear_aforo():
         print("No hay eventos disponibles.")
         return
 
-    # Mostrar eventos con número de asistentes confirmados
-    print(">>>> Monitoreo de Aforo <<<<<")
-    for i, evento in enumerate(eventos, 1):
+    # Filtrar solo eventos activos
+    activos = [e for e in eventos if e.get("estado") == "activo"]
+    if len(activos) == 0:
+        print("No hay eventos activos para monitorear.")
+        return
+
+    # Mostrar eventos activos con número de asistentes confirmados
+    print(">>>> 📊 Monitoreo de Aforo <<<<<")
+    for i, evento in enumerate(activos, 1):
         # Contar asistentes confirmados
         inscripciones = u.leer_json("data/inscripciones.json")
         if inscripciones is None:
@@ -142,15 +152,15 @@ def monitorear_aforo():
 
     try:
         op_evento = int(input("Seleccione un evento (número): ")) - 1
-        if op_evento < 0 or op_evento >= len(eventos):
+        if op_evento < 0 or op_evento >= len(activos):
             print("Selección inválida.")
             return
     except ValueError:
         print("Entrada inválida.")
         return
 
-    evento = eventos[op_evento]
-    print(f"\n>>>> Detalles del Evento: {evento['nombre']} <<<<<")
+    evento = activos[op_evento]
+    print(f"\n>>>> 📋 Detalles del Evento: {evento['nombre']} <<<<<")
     print(f"ID: {evento['id']}")
     print(f"Fecha: {evento['fecha']}")
     print(f"Hora: {evento['hora']}")
@@ -201,7 +211,7 @@ def participacion_artistas():
         id_artista = artista['id_artista']
         count = sum(1 for a in asignaciones if a['artista_id'] == id_artista)
         participacion[id_artista] = {'nombre': artista['nombre'], 'eventos': count}
-    print(">>>> Participación de Artistas <<<<<")
+    print(">>>> 🎤 Participación de Artistas <<<<<")
     for id_artista, data in participacion.items():
         print(f"ID: {id_artista}, Nombre: {data['nombre']}, Eventos: {data['eventos']}")
     print()
@@ -211,17 +221,11 @@ def ver_proximos_eventos():
     if eventos is None:
         print("No hay eventos disponibles.")
         return
-    hoy = datetime.now().date()
-    proximos = []
-    for evento in eventos:
-        try:
-            fecha_evento = datetime.strptime(evento['fecha'], '%Y-%m-%d').date()
-            if fecha_evento >= hoy:
-                proximos.append(evento)
-        except ValueError:
-            continue  # Skip invalid dates
-    proximos.sort(key=lambda x: x['fecha'])
-    print(">>>> Próximos Eventos <<<<<")
+    proximos = [evento for evento in eventos if evento.get("estado") == "proximo"]
+    if not proximos:
+        print("No hay eventos próximos.")
+        return
+    print(">>>> 📅 Próximos Eventos <<<<<")
     for evento in proximos:
         print(f"ID: {evento['id']}, Nombre: {evento['nombre']}, Fecha: {evento['fecha']}, Hora: {evento['hora']}, Lugar: {evento['lugar']}")
     print()
@@ -231,7 +235,7 @@ def listado_asistentes():
     if asistentes is None or len(asistentes) == 0:
         print("No hay asistentes registrados.")
         return
-    print(">>>> Listado de Asistentes <<<<<")
+    print(">>>> 👥 Listado de Asistentes <<<<<")
     for asistente in asistentes:
         print(f"Nombre: {asistente['nombre']}, Cédula: {asistente['cedula']}, Correo: {asistente['correo']}, Estado: {asistente['estado']}, Tipo Boleta: {asistente['tipo_boleta']}")
     print()
@@ -252,7 +256,7 @@ def eventos_menos_asistentes():
         return
     min_asistentes = min(conteo.values(), key=lambda x: x['asistentes'])['asistentes']
     eventos_menos = [data for data in conteo.values() if data['asistentes'] == min_asistentes]
-    print(">>>> Eventos con Menos Asistentes Confirmados <<<<<")
+    print(">>>> 📉 Eventos con Menos Asistentes Confirmados <<<<<")
     for evento in eventos_menos:
         print(f"Nombre: {evento['nombre']}, Asistentes Confirmados: {evento['asistentes']}")
     print()
@@ -272,7 +276,7 @@ def agenda_presentaciones():
     if eventos is None:
         print("No hay eventos disponibles.")
         return
-    print(">>>> Agenda de Presentaciones <<<<<\n")
+    print(">>>> 📅 Agenda de Presentaciones <<<<<\n")
     for asignacion in mis_asignaciones:
         evento = next((e for e in eventos if e['id'] == asignacion['evento_id']), None)
         if evento:
@@ -293,7 +297,7 @@ def detalles_eventos():
     if eventos is None:
         print("No hay eventos disponibles.")
         return
-    print(">>>> Detalles de Eventos Asignados <<<<<")
+    print(">>>> 📋 Detalles de Eventos Asignados <<<<<")
     for asignacion in mis_asignaciones:
         evento = next((e for e in eventos if e['id'] == asignacion['evento_id']), None)
         if evento:
@@ -352,7 +356,7 @@ def ver_eventos_disponibles():
     if len(eventos_disponibles) == 0:
         print("No hay eventos disponibles.")
         return
-    print(">>>> Eventos Disponibles <<<<<")
+    print(">>>> 📅 Eventos Disponibles <<<<<")
     for evento in eventos_disponibles:
         print(f"N°:{evento['id']}\n Nombre: {evento['nombre']}\n Fecha: {evento['fecha']}\n Hora: {evento['hora']}\n Lugar: {evento['lugar']}\n")
     print()
@@ -420,7 +424,7 @@ def boletos_incripciones():
     if len(mis_inscripciones) == 0:
         print("No tiene inscripciones.")
         return
-    print("\n>>>> Mis Inscripciones <<<<<\n")
+    print("\n>>>> 🎫 Mis Inscripciones <<<<<\n")
     for i in mis_inscripciones:
         print(f"Evento N°: {i['evento_id']}, Estado: {i['estado']}")
     print()
